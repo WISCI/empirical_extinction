@@ -66,6 +66,8 @@ def plot_data_model(
     params_unc=None,
     prange=None,
     rjflux=False,
+    savefig=False,
+    figname='default',
 ):
 
     params = fullparamsfunc(params_in)
@@ -213,6 +215,8 @@ def plot_data_model(
     # use the whitespace better
     fig.tight_layout()
 
+    if savefig:
+        fig.savefig(starname+'_'+figname+'.png',dpi=200)
 
 #from measure_extinction.extdata import ExtData
 
@@ -255,7 +259,7 @@ def comp_ext(modinfo, fit_params, velocity, reddened_star, relband, starname):
     return extdata
 
 
-def plot_ext(extdata, starname):
+def plot_ext(extdata, starname, savefig=False, figname='extinction'):
 
     fig, ax = plt.subplots(figsize=(13, 10))
     fontsize = 18
@@ -295,3 +299,6 @@ def plot_ext(extdata, starname):
         )
 
     ax.text(0.7, 0.95, starname, transform=ax.transAxes)
+
+    if savefig:
+        fig.savefig(starname+'_'+figname+'.png',dpi=200)

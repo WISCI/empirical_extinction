@@ -9,9 +9,10 @@ def get_fit_params(params):
     """
     Removes the parameters that are fixed so the fitter does not fit them
     """
-    fit_params = np.zeros(len(params) - 2)
+    fit_params = np.zeros(5)
     fit_params[0:2] = params[0:2]
-    fit_params[2:] = params[3:-1]
+    fit_params[2:4] = params[3:5]
+    fit_params[4] = params[-1]
 
     return fit_params
 
@@ -27,14 +28,14 @@ def get_full_params(params):
 
     return full_params
 
-
 def get_fit_params_g23only(params):
     """
     Removes the parameters that are fixed so the fitter does not fit them
     """
-    fit_params = np.zeros(4)
+    fit_params = np.zeros(5)
     fit_params[0:2] = params[0:2]
-    fit_params[2:] = params[3:5]
+    fit_params[2:4] = params[3:5]
+    fit_params[4] = params[-1]
 
     return fit_params
 
@@ -44,9 +45,10 @@ def get_full_params_g23only(params):
     Expands the fit parameters to the full list
     """
     # dummy info needed to pass the lnprior check
-    full_params = [4.2, 4.0, 0.0, 5.0, 3.1, 0.7, 3.23, 0.41, 4.59, 0.95, 20.5, 17.0]
+    full_params = [4.2, 4.0, 0.0, 5.0, 3.1, 0.7, 3.23, 0.41, 4.59, 0.95, 20.5, 17.0,-6.0]
     full_params[0:2] = params[0:2]
-    full_params[3:5] = params[2:]
+    full_params[3:5] = params[2:4]
+    full_params[-1]  = params[-1]
 
     return full_params
 
@@ -64,6 +66,8 @@ def plot_data_model(
     params_unc=None,
     prange=None,
     rjflux=False,
+    savefig=False,
+    figname='default',
 ):
 
     params = fullparamsfunc(params_in)
@@ -211,6 +215,8 @@ def plot_data_model(
     # use the whitespace better
     fig.tight_layout()
 
+    if savefig:
+        fig.savefig(starname+'_'+figname+'.png',dpi=200)
 
 #from measure_extinction.extdata import ExtData
 
@@ -253,7 +259,7 @@ def comp_ext(modinfo, fit_params, velocity, reddened_star, relband, starname):
     return extdata
 
 
-def plot_ext(extdata, starname):
+def plot_ext(extdata, starname, savefig=False, figname='extinction'):
 
     fig, ax = plt.subplots(figsize=(13, 10))
     fontsize = 18
@@ -293,3 +299,6 @@ def plot_ext(extdata, starname):
         )
 
     ax.text(0.7, 0.95, starname, transform=ax.transAxes)
+
+    if savefig:
+        fig.savefig(starname+'_'+figname+'.png',dpi=200)
