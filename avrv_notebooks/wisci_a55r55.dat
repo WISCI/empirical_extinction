@@ -1,0 +1,24 @@
+# Karl Gordon, 8 Nov 2024
+# Updated by Karl Gordon using the updated fits from Jonty Marshall, 24 Dec 2024
+#
+# A(55) and R(55) results from extrapolating optical and NIR extinction curves.
+# A(55) measured using the JHK E(lambda - 55).
+# E(44 - 55) measured from A(55) and A(44).
+# A(55) and R(55) defined in Fitzpatrick et al. (2019).  They are very similar to A(V) and R(V).
+#
+# Notebooks showing fits and extinction curves at:
+# https://github.com/WISCI/empirical_extinction
+#
+# name        E4455 E4455unc A55   A55unc  R55   R55unc
+2massj085747  1.60  0.02     4.84  0.02    3.03  0.04
+2massj130152  1.81  0.01     5.62  0.02    3.10  0.02
+2massj150958  1.53  0.01     4.56  0.02    2.99  0.02
+2massj170756  1.81  0.01     5.38  0.02    2.97  0.02
+2massj173628  1.57  0.05     5.07  0.03    3.23  0.11
+2massj181129  1.33  0.05     4.52  0.02    3.40  0.13
+2massj182302  1.77  0.05     5.59  0.02    3.16  0.09
+2massj203110  1.70  0.05     5.05  0.02    2.97  0.09
+2massj203234  2.30  0.07     6.35  0.02    2.76  0.09
+2massj203311  2.41  0.11     6.91  0.03    2.86  0.13
+2massj203326  2.20  0.06     6.29  0.02    2.86  0.08
+2massj204521  2.16  0.08     6.28  0.03    2.91  0.10
