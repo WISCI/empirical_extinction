@@ -62,11 +62,6 @@ def main():
     fstarname = f"{args.starname}.dat"
     reddened_star = StarData(fstarname, path=f"{args.path}")
 
-    # for wisci (only fit to get the stellar parameters)
-    for ckey in list(reddened_star.data.keys()):
-        if ckey not in ["BAND", "STIS_Opt"]:
-            del reddened_star.data[ckey]
-
     if "BAND" in reddened_star.data.keys():
         band_names = reddened_star.data["BAND"].get_band_names()
     else:
@@ -105,6 +100,11 @@ def main():
     print("finished reading model files")
     print("--- %s seconds ---" % (time.time() - start_time))
 
+    # for wisci (only fit to get the stellar parameters)
+    for ckey in list(reddened_star.data.keys()):
+        if ckey not in ["BAND", "STIS_Opt"]:
+            del reddened_star.data[ckey]
+
     # setup the model
     # memod = MEModel(modinfo=modinfo, obsdata=reddened_star)  # use to activate logf fitting
     memod = MEModel(modinfo=modinfo)
@@ -141,6 +141,7 @@ def main():
     memod.velocity.fixed = True
     memod.logTeff.value = 4.3
     memod.logTeff.fixed = False
+    memod.logg.fixed = False
 
     memod.set_initial_norm(reddened_star, modinfo)
 
