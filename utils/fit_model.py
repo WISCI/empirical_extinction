@@ -52,7 +52,7 @@ def main():
     parser = fit_model_parser()
     args = parser.parse_args()
 
-    outname = f"{args.starname}_mefit"
+    outname = f"figs/{args.starname}_mefit"
     if args.png:
         outtype = "png"
     else:
@@ -139,7 +139,6 @@ def main():
 
     # for wisci
     memod.velocity.fixed = True
-    memod.logTeff.value = 4.3
     memod.logTeff.fixed = False
     memod.logg.fixed = False
 
