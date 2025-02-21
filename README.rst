@@ -22,9 +22,10 @@ License
 This code is licensed under a 3-clause BSD style license (see the
 ``LICENSE`` file).
 
-Data
-----
+Figures
+-------
 
+1. UV-MIR spectra of all stars: plotting/plot_spec_stack.py
 
-Notebooks
----------
+Tables
+------
