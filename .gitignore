@@ -4,6 +4,5 @@
 exts
 figs
 .ipynb*
-*.ipynb
 *cache*
 *.p
