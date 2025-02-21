@@ -58,9 +58,12 @@ def main():
     else:
         outtype = "pdf"
 
+    # WISCI
+    only_bands = ["B", "V", "R", "I", "J", "H", "K"]
+
     # get data
     fstarname = f"{args.starname}.dat"
-    reddened_star = StarData(fstarname, path=f"{args.path}")
+    reddened_star = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
 
     if "BAND" in reddened_star.data.keys():
         band_names = reddened_star.data["BAND"].get_band_names()
@@ -200,7 +203,7 @@ def main():
     # create an extincion curve and save it
     extdata = ExtData()
     # get the reddened star data again to have all the possible spectra
-    reddened_star_full = StarData(fstarname, path=f"{args.path}")
+    reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=5500.0 * u.Angstrom)
     col_info = {"av": fitmod.Av.value, "rv": fitmod.Rv.value}
     extdata.columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}

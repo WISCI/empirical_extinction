@@ -1,4 +1,9 @@
 
-/Models
-/Targets
 .DS_Store
+*.log
+exts
+figs
+.ipynb*
+*.ipynb
+*cache*
+*.p
