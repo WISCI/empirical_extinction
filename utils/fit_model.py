@@ -145,6 +145,14 @@ def main():
     memod.velocity.fixed = True
     memod.logTeff.fixed = False
     memod.logg.fixed = False
+    memod.velocity.fixed = False
+    memod.C2.fixed = True
+    memod.B3.fixed = True
+    memod.C4.fixed = True
+    memod.xo.fixed = True
+    memod.gamma.fixed = True
+    memod.vel_MW.fixed = True
+    memod.logHI_MW.fixed = True
 
     memod.set_initial_norm(reddened_star, modinfo)
 
