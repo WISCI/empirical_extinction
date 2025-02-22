@@ -23,9 +23,11 @@ def plot_set(
     """
     Plot a set of spectra
     """
+    only_bands = ["J", "H", "K"]
+
     n_col = len(col_vals)
     for i in range(len(starnames)):
-        stardata = StarData(subpath + starnames[i] + ".dat", path=path)
+        stardata = StarData(subpath + starnames[i] + ".dat", path=path, only_bands=only_bands)
 
         stardata.plot(
             ax,

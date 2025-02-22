@@ -59,7 +59,8 @@ def main():
         outtype = "pdf"
 
     # WISCI
-    only_bands = ["B", "V", "R", "I", "J", "H", "K"]
+    # only_bands = ["B", "V", "R", "I", "J", "H", "K"]
+    only_bands = ["J", "H", "K"]
 
     # get data
     fstarname = f"{args.starname}.dat"
