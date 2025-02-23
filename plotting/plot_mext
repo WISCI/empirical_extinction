@@ -1,0 +1,16 @@
+meplot_ext exts/2massj085747_mefit_ext_powlawdrudes.fits \
+    exts/2massj130152_mefit_ext_powlawdrudes.fits \
+    exts/2massj150958_mefit_ext_powlawdrudes.fits \
+    exts/2massj170756_mefit_ext_powlawdrudes.fits \
+    exts/2massj173628_mefit_ext_powlawdrudes.fits \
+    exts/2massj181129_mefit_ext_powlawdrudes.fits \
+    exts/2massj182302_mefit_ext_powlawdrudes.fits \
+    exts/2massj203110_mefit_ext_powlawdrudes.fits \
+    exts/2massj203234_mefit_ext_powlawdrudes.fits \
+    exts/2massj203311_mefit_ext_powlawdrudes.fits \
+    exts/2massj203326_mefit_ext_powlawdrudes.fits \
+    exts/2massj204521_mefit_ext_powlawdrudes.fits \
+    exts/2massj204521_mefit_ext_powlawdrudes.fits \
+    --alax --log --onefig
+
+ 

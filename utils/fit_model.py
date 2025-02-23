@@ -44,7 +44,6 @@ def fit_model_parser():
         "--mcmc_nsteps", help="number of MCMC steps", default=1000, type=int
     )
     parser.add_argument("--showfit", help="display the best fit model plot", action="store_true")
-    parser.add_argument("--png", help="save plots as png instead of pdf", action="store_true")
     return parser
 
 
@@ -53,10 +52,6 @@ def main():
     args = parser.parse_args()
 
     outname = f"figs/{args.starname}_mefit"
-    if args.png:
-        outtype = "png"
-    else:
-        outtype = "pdf"
 
     # WISCI
     # only_bands = ["B", "V", "R", "I", "J", "H", "K"]
@@ -173,7 +168,8 @@ def main():
     fitmod.pprint_parameters()
 
     fitmod.plot(reddened_star, modinfo)
-    plt.savefig(f"{outname}_minimizer.{outtype}")
+    plt.savefig(f"{outname}_minimizer.pdf")
+    plt.savefig(f"{outname}_minimizer.png")
     plt.close()
 
     if args.mcmc:
@@ -184,6 +180,7 @@ def main():
             reddened_star,
             modinfo,
             nsteps=args.mcmc_nsteps,
+            save_samples=f"{outname.replace("figs", "exts")}_.h5",
         )
 
         print("finished sampling")
@@ -192,15 +189,18 @@ def main():
         fitmod2.pprint_parameters()
 
         fitmod2.plot(reddened_star, modinfo)
-        plt.savefig(f"{outname}_mcmc.{outtype}")
+        plt.savefig(f"{outname}_mcmc.pdf")
+        plt.savefig(f"{outname}_mcmc.png")
         plt.close()
 
         fitmod2.plot_sampler_chains(sampler)
-        plt.savefig(f"{outname}_mcmc_chains.{outtype}")
+        plt.savefig(f"{outname}_mcmc_chains.pdf")
+        plt.savefig(f"{outname}_mcmc_chains.png")
         plt.close()
 
         fitmod2.plot_sampler_corner(flat_samples)
-        plt.savefig(f"{outname}_mcmc_corner.{outtype}")
+        plt.savefig(f"{outname}_mcmc_corner.pdf")
+        plt.savefig(f"{outname}_mcmc_corner.png")
         plt.close()
 
         fitmod = fitmod2
@@ -216,7 +216,7 @@ def main():
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=5500.0 * u.Angstrom)
     col_info = {"av": fitmod.Av.value, "rv": fitmod.Rv.value}
     extdata.columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
-    extdata.save(f"{outname}_ext.fits", column_info=col_info)
+    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits", column_info=col_info)
 
     if args.showfit:
         fitmod.plot(reddened_star, modinfo)

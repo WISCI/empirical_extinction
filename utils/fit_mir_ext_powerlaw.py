@@ -52,7 +52,7 @@ if __name__ == "__main__":
         locpath = ""
 
     file = args.file
-    ofile = file.replace(".fits", "_POWLAW2DRUDE.fits")
+    ofile = file.replace(".fits", "_powlawdrudes.fits")
 
     # read in the observed E(l-V) or A(l)/A(V) extinction curve
     obsext = ExtData(filename=locpath + file)

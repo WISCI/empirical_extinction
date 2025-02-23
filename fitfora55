@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+
+# extargs="--png --nsteps=10000 --burnfrac=0.4"
+extargs="--nsteps=10000 --burnfrac=0.4 --png"
+# extargs="--png"
+fit="python utils/fit_mir_ext_powerlaw.py"
+
+rm -f fits/*powlawdrueds.h5
+
+for CSTAR in 2massj085747 2massj130152 2massj150958 2massj170756 2massj173628 2massj181129 2massj182302 2massj203110 2massj203234 2massj203311 2massj203326 2massj204521 
+
+do
+    $fit "exts/"$CSTAR"_mefit_ext.fits" $extargs &> "logs/"$CSTAR"_powlawdrudes.log" &
+done
