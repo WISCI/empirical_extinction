@@ -19,7 +19,7 @@ os.environ["OMP_NUM_THREADS"] = "1"
 def fit_model_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("starname", help="Name of star")
-    parser.add_argument("--path", help="Path to star data", default="/home/kgordon/Python/extstar_data/DAT_files/")
+    parser.add_argument("--path", help="Path to star data", default="/home/kgordon/Python/extstar_data/MW/")
     parser.add_argument(
         "--modtype",
         help="Pick the type of model grid",
@@ -67,6 +67,7 @@ def main():
     else:
         band_names = []
     data_names = list(reddened_star.data.keys())
+    band_names = None
 
     # model data
     start_time = time.time()
@@ -106,8 +107,8 @@ def main():
             del reddened_star.data[ckey]
 
     # setup the model
-    # memod = MEModel(modinfo=modinfo, obsdata=reddened_star)  # use to activate logf fitting
-    memod = MEModel(modinfo=modinfo)
+    # memod = MEModel(modinfo=modinfo, obsdata=reddened_star, logf=True)  # use to activate logf fitting
+    memod = MEModel(modinfo=modinfo, obsdata=reddened_star)
 
     if "Teff" in reddened_star.model_params.keys():
         memod.logTeff.value = np.log10(float(reddened_star.model_params["Teff"]))
@@ -126,6 +127,9 @@ def main():
 
     memod.fit_weights(reddened_star)
 
+    # a little extra weight is needed for the photometry as there are many spectral points
+    memod.weights["BAND"] *= 10.0
+
     if args.modtype == "whitedwarfs":
         memod.vturb.value = 0.0
         memod.vturb.fixed = True
@@ -140,11 +144,11 @@ def main():
     memod.Av.value = args.Av_init
 
     # for wisci
-    memod.velocity.fixed = True
     memod.logTeff.fixed = False
     memod.logTeff.prior = (memod.logTeff.value, 0.1)
     memod.logg.fixed = False
     memod.logg.prior = (memod.logg.value, 0.1)
+    memod.velocity.value = -50.0
     memod.velocity.fixed = False
     memod.C2.fixed = True
     memod.B3.fixed = True
@@ -223,14 +227,17 @@ def main():
 
         fitmod = fitmod2
 
+    # get the reddened star data again to have all the possible spectra
+    reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
+
     # create a stardata object with the best intrinsic (no extinction) model
     modsed = fitmod.stellar_sed(modinfo)
+    if "BAND" in reddened_star.data.keys():
+        modinfo.band_names = reddened_star.data["BAND"].get_band_names()
     modsed_stardata = modinfo.SED_to_StarData(modsed)
 
     # create an extincion curve and save it
     extdata = ExtData()
-    # get the reddened star data again to have all the possible spectra
-    reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=5500.0 * u.Angstrom)
     extdata.columns = dust_columns
     extdata.save(f"{outname.replace("figs", "exts")}_ext.fits", fit_params=fit_params)
