@@ -43,6 +43,7 @@ def fit_model_parser():
     parser.add_argument(
         "--mcmc_nsteps", help="number of MCMC steps", default=1000, type=int
     )
+    parser.add_argument("--mcmc_resume", help="resume EMCEE MCMC fitting from saved file", action="store_true")
     parser.add_argument("--showfit", help="display the best fit model plot", action="store_true")
     return parser
 
@@ -121,6 +122,8 @@ def main():
         memod.velocity.value = float(reddened_star.model_params["velocity"])
         memod.velocity.fixed = True
 
+    memod.add_exclude_region(np.flip(1.0 / (np.array([0.28, 0.34]) * u.micron)))
+
     memod.fit_weights(reddened_star)
 
     if args.modtype == "whitedwarfs":
@@ -139,7 +142,9 @@ def main():
     # for wisci
     memod.velocity.fixed = True
     memod.logTeff.fixed = False
+    memod.logTeff.prior = (memod.logTeff.value, 0.1)
     memod.logg.fixed = False
+    memod.logg.prior = (memod.logg.value, 0.1)
     memod.velocity.fixed = False
     memod.C2.fixed = True
     memod.B3.fixed = True
@@ -150,6 +155,9 @@ def main():
     memod.logHI_MW.fixed = True
 
     memod.set_initial_norm(reddened_star, modinfo)
+
+    # dictonary for fit parameter tables
+    fit_params = {}
 
     print("initial parameters")
     memod.pprint_parameters()
@@ -166,6 +174,9 @@ def main():
 
     print("best parameters")
     fitmod.pprint_parameters()
+    fit_params["MIN"] = fitmod.save_parameters()
+
+    dust_columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
 
     fitmod.plot(reddened_star, modinfo)
     plt.savefig(f"{outname}_minimizer.pdf")
@@ -181,12 +192,19 @@ def main():
             modinfo,
             nsteps=args.mcmc_nsteps,
             save_samples=f"{outname.replace("figs", "exts")}_.h5",
+            resume=args.mcmc_resume,
         )
 
         print("finished sampling")
 
         print("p50 parameters")
         fitmod2.pprint_parameters()
+        fit_params["MCMC"] = fitmod2.save_parameters()
+
+        dust_columns = {
+            "AV": (fitmod2.Av.value, fitmod2.Av.unc),
+            "RV": (fitmod2.Rv.value, fitmod2.Rv.unc),
+        }
 
         fitmod2.plot(reddened_star, modinfo)
         plt.savefig(f"{outname}_mcmc.pdf")
@@ -214,9 +232,8 @@ def main():
     # get the reddened star data again to have all the possible spectra
     reddened_star_full = StarData(fstarname, path=f"{args.path}", only_bands=only_bands)
     extdata.calc_elx(reddened_star_full, modsed_stardata, rel_band=5500.0 * u.Angstrom)
-    col_info = {"av": fitmod.Av.value, "rv": fitmod.Rv.value}
-    extdata.columns = {"AV": (fitmod.Av.value, 0.0), "RV": (fitmod.Rv.value, 0.0)}
-    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits", column_info=col_info)
+    extdata.columns = dust_columns
+    extdata.save(f"{outname.replace("figs", "exts")}_ext.fits", fit_params=fit_params)
 
     if args.showfit:
         fitmod.plot(reddened_star, modinfo)
