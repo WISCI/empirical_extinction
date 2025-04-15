@@ -144,6 +144,10 @@ if __name__ == "__main__":
     #fm90_init.C2.bounds = (-0.1, 1.0)
     #fm90_init.C3.bounds = (-0.5, 2.5)
     #fm90_init.C4.bounds = (-0.5, 1.0)
+    
+    # for wisci a couple of stars have very strong bumps!
+    fm90_init.B3.bounds = (0.0, 10.0)
+
     fm90_init.xo.bounds = (4.5, 4.9)
     fm90_init.xo = 4.59
     fm90_init.xo.fixed = False
