@@ -190,22 +190,16 @@ if __name__ == "__main__":
     print("autocorr tau = ", fit3.fit_info["sampler"].get_autocorr_time(quiet=True))
 
     # setup the parameters for saving
-    fm90_best_params = (fm90_fit.param_names, fm90_fit.parameters)
-    fm90_per_param_vals = zip(
-        fm90_fit3.parameters, fm90_fit3.uncs_plus, fm90_fit3.uncs_minus
-    )
-    fm90_per_params = (fm90_fit3.param_names, list(fm90_per_param_vals))
+    fit_results = {}
+    fit_results["MIN"] = ext.create_param_table(fm90_fit.param_names, fm90_fit.parameters)
+    fit_results["MCMC"] = ext.create_param_table(
+        fm90_fit3.param_names,
+        fm90_fit3.parameters,
+        parameters_punc=fm90_fit3.uncs_plus,
+        parameters_munc=fm90_fit3.uncs_minus)
 
     # save extinction and fit parameters
-    #if "AV" not in ext.columns.keys():
-    #    ext.calc_AV()
-    #column_info = {"ebv": ext.columns["EBV"][0], "av": ext.columns["AV"][0]}
-    ext.save(
-        ofile,
-        fm90_best_params=fm90_best_params,
-        fm90_per_params=fm90_per_params,
-    #    column_info=column_info,
-    )
+    ext.save(ofile, fit_params=fit_results)
 
     # make the standard mcmc plots
     fit3.plot_emcee_results(fm90_fit3, filebase=ofile.replace(".fits", ""))

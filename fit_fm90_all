@@ -1,5 +1,5 @@
-for CSTAR in 2massj130152 2massj150958 2massj150958 2massj173628 2massj181129 2massj182302 2massj20311
+for CSTAR in 2massj130152 2massj150958 2massj150958 2massj173628 2massj181129 2massj182302 2massj203110
 
 do
-    python utils/fit_uv_ext_fm90.py exts/"$CSTAR"_mefit_ext_a55.fits --png --nsteps=5000 --burnfrac=0.5
+    python utils/fit_uv_ext_fm90.py exts/"$CSTAR"_mefit_ext_a55.fits --png --nsteps=1000 --burnfrac=0.5 &> "logs/"$CSTAR"_FM90_ext.log" &
 done

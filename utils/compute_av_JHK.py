@@ -2,10 +2,7 @@ import glob
 import numpy as np
 import astropy.units as u
 import matplotlib.pyplot as plt
-from scipy.optimize import curve_fit
 
-from astropy.modeling.fitting import LevMarLSQFitter
-from astropy.modeling.models import PowerLaw1D, Const1D
 
 from measure_extinction.extdata import ExtData
 
