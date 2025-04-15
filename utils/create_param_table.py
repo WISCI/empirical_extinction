@@ -3,7 +3,7 @@ import numpy as np
 from astropy.table import QTable
 
 from measure_extinction.extdata import ExtData
-from measure_extinction.extdata import conv55toAv, conv55toRv
+from measure_extinction.extdata import conv55toAv, conv55toRv, conv55toEbv
 
 
 def prettyname(name):
@@ -17,11 +17,11 @@ if __name__ == "__main__":
         otab = QTable(
             # fmt: off
             names=("name", "E4455", "E4455_unc", "A55", "A55_unc", "R55", "R55_unc", 
-                   "AV", "AV_unc", "RV", "RV_unc", 
+                   "EBV", "EBV_unc", "AV", "AV_unc", "RV", "RV_unc", 
                    "C1", "C1_unc", "C2", "C2_unc", "B3", "B3_unc", "C4", "C4_unc",
                    "x0", "x0_unc", "gamma", "gamma_unc"),
             dtype=("S", "f", "f", "f", "f", "f", "f", "f", "f", "f", 
-                   "f", "f", "f", "f",
+                   "f", "f", "f", "f", "f", "f",
                    "f", "f", "f", "f", "f", "f", "f", "f", "f"),
             # fmt:on
         )
@@ -29,8 +29,8 @@ if __name__ == "__main__":
         otab_lat = QTable(
             # fmt: off
             names=("Name", 
-                   r"$E(44-55)$", r"$A(55)$", r"$R(55)$", r"$A(V)$", r"$R(V)$"),
-            dtype=("S", "S", "S", "S", "S", "S")
+                   r"$E(44-55)$", r"$A(55)$", r"$R(55)$", r"$E(B-V)$", r"$A(V)$", r"$R(V)$"),
+            dtype=("S", "S", "S", "S", "S", "S", "S")
             # fmt:on
         )
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         )
 
 
-        colnames = ["EBV", "AV", "RV", "AVd", "RVd"]
+        colnames = ["EBV", "AV", "RV", "EBVd", "AVd", "RVd"]
         fm90names = ["C1", "C2", "B3", "C4", "xo", "gamma"]
         stellnames = ["logTeff", "logg", "vturb", "velocity"]
         
@@ -97,6 +97,11 @@ if __name__ == "__main__":
                         Rv = conv55toRv(edata.columns["RV"])
                         val = Rv[0]
                         unc = Rv[1]
+                    elif ccol == "EBVd":
+                        # EBV in file actually E4455
+                        Ebv = conv55toEbv(edata.columns["AV"], edata.columns["EBV"], edata.columns["RV"])
+                        val = Ebv[0]
+                        unc = Ebv[1]
                     else:
                         val = edata.columns[ccol][0]
                         unc = edata.columns[ccol][1]
