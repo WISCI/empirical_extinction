@@ -128,7 +128,12 @@ def main():
     memod.fit_weights(reddened_star)
 
     # a little extra weight is needed for the photometry as there are many spectral points
-    memod.weights["BAND"] *= 10.0
+    memod.weights["STIS_Opt"] *= 0.01
+    gvals = (reddened_star.data["STIS_Opt"].waves < 0.36 * u.micron)
+    memod.weights["STIS_Opt"][gvals] *= 10.0
+    # memod.weights["BAND"] *= 10.0
+
+    #memod.g23_all_ext = True
 
     if args.modtype == "whitedwarfs":
         memod.vturb.value = 0.0
@@ -145,7 +150,7 @@ def main():
 
     # for wisci
     memod.logTeff.fixed = False
-    memod.logTeff.prior = (memod.logTeff.value, 0.1)
+    memod.logTeff.prior = (memod.logTeff.value, 0.025)
     memod.logg.fixed = False
     memod.logg.prior = (memod.logg.value, 0.1)
     memod.velocity.value = -50.0
