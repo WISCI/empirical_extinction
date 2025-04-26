@@ -128,7 +128,7 @@ def main():
     memod.fit_weights(reddened_star)
 
     # a little extra weight is needed for the photometry as there are many spectral points
-    memod.weights["STIS_Opt"] *= 0.01
+    memod.weights["STIS_Opt"] *= 0.1
     gvals = (reddened_star.data["STIS_Opt"].waves < 0.36 * u.micron)
     memod.weights["STIS_Opt"][gvals] *= 10.0
     # memod.weights["BAND"] *= 10.0
