@@ -125,12 +125,18 @@ def main():
 
     memod.add_exclude_region(np.flip(1.0 / (np.array([0.28, 0.34]) * u.micron)))
 
+    # add in 1% uncertainty on the STIS spectra
+    gvals = reddened_star.data["STIS_Opt"].uncs > 0.0
+    nuncs = (np.square(reddened_star.data["STIS_Opt"].uncs[gvals]) +
+             np.square(reddened_star.data["STIS_Opt"].fluxes[gvals] * 0.01))
+    reddened_star.data["STIS_Opt"].uncs[gvals] = np.sqrt(nuncs)
+
     memod.fit_weights(reddened_star)
 
     # a little extra weight is needed for the photometry as there are many spectral points
-    memod.weights["STIS_Opt"] *= 0.1
-    gvals = (reddened_star.data["STIS_Opt"].waves < 0.36 * u.micron)
-    memod.weights["STIS_Opt"][gvals] *= 10.0
+    # memod.weights["STIS_Opt"] *= 0.1
+    # gvals = (reddened_star.data["STIS_Opt"].waves < 0.36 * u.micron)
+    # memod.weights["STIS_Opt"][gvals] *= 10.0
     memod.weights["BAND"] *= 10.0
 
     #memod.g23_all_ext = True
