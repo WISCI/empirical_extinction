@@ -202,7 +202,7 @@ def main():
         print("starting sampling")
         # using an MCMC sampler to define nD probability function
         # use best fit result as the starting point
-        fitmod2, flat_samples, sampler = fitmod.fit_sampler(
+        fitmod2, flat_samples, sampler = memod.fit_sampler(
             reddened_star,
             modinfo,
             nsteps=args.mcmc_nsteps,
