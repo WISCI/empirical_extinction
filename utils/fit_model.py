@@ -206,6 +206,7 @@ def main():
             reddened_star,
             modinfo,
             nsteps=args.mcmc_nsteps,
+            initfrac=0.10,
             save_samples=f"{outname.replace("figs", "exts")}_.h5",
             resume=args.mcmc_resume,
         )
