@@ -58,7 +58,7 @@ if __name__ == "__main__":
         tags = ["All"]
         for cfile, ctag in zip(files, tags):
 
-            filename = "data/wisci_uv.dat"
+            filename = "data/wisci_all.dat"
 
             f = open(filename, "r")
             file_lines = list(f)
