@@ -60,5 +60,13 @@ if __name__ == "__main__":
             extdata.columns["RV"][0],
         )
 
+        # remove FUV data for one star as not reliable
+        if "j130152" in ifile:
+            gvals = extdata.waves["STIS"] > 0.15 * u.micron
+            extdata.waves["STIS"] = extdata.waves["STIS"][gvals]
+            extdata.exts["STIS"] = extdata.exts["STIS"][gvals]
+            extdata.uncs["STIS"] = extdata.uncs["STIS"][gvals]
+            extdata.npts["STIS"] = extdata.npts["STIS"][gvals]
+
         ofile = fname.replace("_ext.fits", "_ext_a55.fits")
         extdata.save(ofile)
