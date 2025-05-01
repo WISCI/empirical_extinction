@@ -162,7 +162,7 @@ if __name__ == "__main__":
         otab_lat.write(
             f"tables/{basestr}{ctype}_ensemble_dust_params.tex",
             format="aastex",
-            col_align="lccccc",
+            col_align="lcccccc",
             latexdict={
                 "caption": r"Extinction Parameters \label{tab_ext_col_param}",
             },
