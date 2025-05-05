@@ -3,4 +3,5 @@ for CSTAR in 2massj085747 2massj130152 2massj150958 2massj170756 2massj173628 2m
 
 do
     nice -n 19 python utils/fit_model.py $CSTAR --picmodel --Av_init 5.0 --mcmc --mcmc_nsteps 100000 &> "logs/"$CSTAR"_ext.log" &
+    # nice -n 19 python utils/fit_model.py $CSTAR --picmodel --Av_init 5.0 &> "logs/"$CSTAR"_ext.log" &
 done

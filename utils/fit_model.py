@@ -156,9 +156,14 @@ def main():
 
     # for wisci
     memod.logTeff.fixed = False
-    memod.logTeff.prior = (memod.logTeff.value, 0.025)
+    logTeffunc = 0.025
+    sfac = 3.0
+    memod.logTeff.prior = (memod.logTeff.value, logTeffunc)
+    memod.logTeff.bounds = [memod.logTeff.value - sfac*logTeffunc, memod.logTeff.value + sfac*logTeffunc]
     memod.logg.fixed = False
-    memod.logg.prior = (memod.logg.value, 0.1)
+    loggunc = 0.1
+    memod.logg.prior = (memod.logg.value, loggunc)
+    memod.logg.bounds = [memod.logg.value - sfac*loggunc, memod.logg.value + sfac*loggunc]
     memod.velocity.value = -50.0
     memod.velocity.fixed = False
     memod.C2.fixed = True

@@ -45,11 +45,13 @@ if __name__ == "__main__":
     logg_init = []
     logg = []
     logg_unc = []
+    sptype = []
     for cname in starnames:
         # get the initial values
         reddened_star = StarData(f"{cname}.dat", path=path)
         logteff_init.append(np.log10(float(reddened_star.model_params["Teff"])))
         logg_init.append(float(reddened_star.model_params["logg"]))
+        sptype.append(reddened_star.sptype)
 
         # get the fit values
         cfile = f"exts/{cname}_mefit_ext.fits"
@@ -66,11 +68,12 @@ if __name__ == "__main__":
     ax.errorbar(logteff_init, logg_init, fmt="ro")
     ax.errorbar(logteff, logg, xerr=logteff_unc, yerr=logg_unc, fmt="bo")
 
-    init_fit_vals = zip(logteff_init, logteff, logg_init, logg, starnames)
-    for logteff1, logteff2, logg1, logg2, cname in init_fit_vals:
+    init_fit_vals = zip(logteff_init, logteff, logg_init, logg, sptype, starnames)
+    for logteff1, logteff2, logg1, logg2, csptype, cname in init_fit_vals:
         ax.plot([logteff1, logteff2], [logg1, logg2], "k:")
-        ax.text(logteff2, logg2, cname, fontsize=0.7*fontsize, alpha=0.5)
+        ax.text(logteff2, logg2, f"{cname}/{csptype}", fontsize=0.7*fontsize, alpha=0.5)
 
+    ax.invert_yaxis()
     ax.set_xlabel("log(Teff)")
     ax.set_ylabel("log(g)")
 
