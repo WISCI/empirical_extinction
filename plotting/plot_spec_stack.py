@@ -24,6 +24,7 @@ def plot_set(
     Plot a set of spectra
     """
     only_bands = ["J", "H", "K"]
+    only_bands = None
 
     n_col = len(col_vals)
     for i in range(len(starnames)):

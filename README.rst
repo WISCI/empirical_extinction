@@ -50,7 +50,21 @@ that have STIS UV data.
 Figures
 -------
 
-1. UV-MIR spectra of all stars: plotting/plot_spec_stack.py
+1. UV-MIR spectra of all stars: plotting/plot_spec_stack.py --models
+
+2. Example fit: `meplot_model XX --obspath ~/Python/extstar_data/MW/ --picmodname tlusty_z100_modinfo.p`
+
+3. UV-MIR extinction curves for all stars: `plotting/plot_uvoptir_ext.py`
 
 Tables
 ------
+
+1. Photometry: utils/create_phot_table.py 
+
+2. Fitting parameters: By hand
+
+3. Stellar fit parameters: utils/create_param_table.py
+
+4. Column fit parameters: utils/create_param_table.py
+
+5. FM90 fit parameters: utils/create_param_table.py. 

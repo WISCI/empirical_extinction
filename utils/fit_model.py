@@ -123,7 +123,11 @@ def main():
         memod.velocity.value = float(reddened_star.model_params["velocity"])
         memod.velocity.fixed = True
 
-    memod.add_exclude_region(np.flip(1.0 / (np.array([0.28, 0.34]) * u.micron)))
+    if "203311" in args.starname:
+        max_ex = 0.34
+    else:
+        max_ex = 0.32
+    memod.add_exclude_region(np.flip(1.0 / (np.array([0.28, max_ex]) * u.micron)))
 
     # add in 1% uncertainty on the STIS spectra
     gvals = reddened_star.data["STIS_Opt"].uncs > 0.0
