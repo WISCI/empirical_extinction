@@ -52,7 +52,7 @@ Figures
 
 1. UV-MIR spectra of all stars: plotting/plot_spec_stack.py --models
 
-2. Example fit: `meplot_model XX --obspath ~/Python/extstar_data/MW/ --picmodname tlusty_z100_modinfo.p`
+2. Example fit: `meplot_model 2massj182302 --obspath ~/Python/extstar_data/MW/ --picmodname tlusty_z100_modinfo.p`
 
 3. UV-MIR extinction curves for all stars: `plotting/plot_uvoptir_ext.py`
 

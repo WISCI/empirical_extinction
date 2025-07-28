@@ -1,5 +1,6 @@
 import argparse
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 import numpy as np
 
 from measure_extinction.stardata import StarData
@@ -9,6 +10,7 @@ if __name__ == "__main__":
 
     # commandline parser
     parser = argparse.ArgumentParser()
+    parser.add_argument("--add_limits", help="add the parameters limits", action="store_true")
     parser.add_argument("--png", help="save figure as a png file", action="store_true")
     parser.add_argument("--pdf", help="save figure as a pdf file", action="store_true")
     args = parser.parse_args()
@@ -73,7 +75,12 @@ if __name__ == "__main__":
         ax.plot([logteff1, logteff2], [logg1, logg2], "k:")
         ax.text(logteff2, logg2, f"{cname}/{csptype}", fontsize=0.7*fontsize, alpha=0.5)
 
+        if args.add_limits:
+            ax.add_patch(Rectangle((logteff1 - 0.075, logg1 - 0.3), 2 * 0.075, 2 * 0.3, fill=False,
+                                   linestyle=":", alpha=0.5))
+
     ax.invert_yaxis()
+    ax.set_xlim(4.1, 4.8)
     ax.set_xlabel("log(Teff)")
     ax.set_ylabel("log(g)")
 
